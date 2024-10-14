@@ -13,6 +13,9 @@ import RightPanel from "./components/common/RightPanel";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
+import Jobs from "./pages/Jobs";
+import Results from "./pages/Results";
+import Newjobs from "./pages/Newjobs";
 
 function App() {
 	const { data: authUser, isLoading } = useQuery({
@@ -53,6 +56,9 @@ function App() {
 				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
 				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
 				<Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
+				<Route path='/Jobs' element={authUser ? <Jobs authUser={authUser} /> : <Navigate to='/login' />} />
+				<Route path='/Results' element={authUser ? <Results authUser={authUser} /> : <Navigate to='/login' />} />  
+				<Route path='/Newjobs' element={authUser ? <Newjobs authUser={authUser} /> : <Navigate to='/login' />} />  
 				<Route path='/MLPage' element={authUser ? <MLPage authUser={authUser} /> : <Navigate to='/login' />} />                              
 			</Routes>
 			{authUser && <RightPanel />}

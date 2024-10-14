@@ -71,14 +71,44 @@ const Sidebar = () => {
           </li>
           <li className="flex justify-center md:justify-start">
             <Link
-              to={`/MLPage`}
+              to={`/Jobs`}
               className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer"
             >
               <img src={img1} alt="Profile" className="w-10 h-10" />{" "}
               {/* Increased size */}
-              <span className="text-lg hidden md:block">CarrerConnect</span>
+              <span className="text-lg hidden md:block">Job Upload</span>
             </Link>
           </li>
+          <li className="flex justify-center md:justify-start">
+            <Link
+              to={`/Newjobs`}
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+            >
+              <img src={img1} alt="Profile" className="w-10 h-10" />{" "}
+              {/* Increased size */}
+              <span className="text-lg hidden md:block">New Jobs</span>
+            </Link>
+          </li>
+          <li className="flex justify-center md:justify-start">
+            <Link
+              to={`/Results`}
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+            >
+              <img src={img1} alt="Profile" className="w-10 h-10" />{" "}
+              {/* Increased size */}
+              <span className="text-lg hidden md:block">Recruiter's Results</span>
+            </Link>
+          </li>
+          {/* <li className="flex justify-center md:justify-start">
+            <Link
+              to={`/MLPage`}
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+            >
+              <img src={img1} alt="Profile" className="w-10 h-10" />{" "}
+             
+              <span className="text-lg hidden md:block">CarrerConnect</span>
+            </Link>
+          </li> */}
         </ul>
         {authUser && (
           <Link

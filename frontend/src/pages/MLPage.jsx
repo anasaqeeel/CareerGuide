@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom';
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.js";
 
@@ -6,6 +7,9 @@ const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
   const [fetchedResumes, setFetchedResumes] = useState([]); // To store the fetched resumes
   const username = authUser?.username;
+  const location = useLocation();
+  const { jobUsername, jobTitle, authUsername } = location.state;  // Extract data from state
+
 
   // Handle resume file upload and extract text from the PDF
   const handleResumeUpload = (e) => {
@@ -54,6 +58,8 @@ const MLPage = ({ authUser }) => {
         },
         body: JSON.stringify({
           username: username,
+          recemail:jobUsername,
+          jobtitle:jobTitle,
           resumeText: resumeText,
         }),
       });
@@ -125,6 +131,7 @@ const MLPage = ({ authUser }) => {
           Fetch Resumes from Backend
         </button>
       </div>
+      
 
       {/* Display the fetched resumes */}
       <div className="mt-4">

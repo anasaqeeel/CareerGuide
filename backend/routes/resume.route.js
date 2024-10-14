@@ -5,14 +5,14 @@ const router = express.Router();
 
 // POST route to store resume text
 router.post("/", async (req, res) => {
-  const { username, resumeText } = req.body;
+  const { username,recemail,jobtitle, resumeText } = req.body;
 
   if (!username || !resumeText) {
     return res.status(400).json({ message: "Username and resume text are required" });
   }
 
   try {
-    const newResume = new Resume({ username, resumeText });
+    const newResume = new Resume({ username,recemail,jobtitle, resumeText });
     await newResume.save();
 
     res.status(201).json({ message: "Resume stored successfully" });

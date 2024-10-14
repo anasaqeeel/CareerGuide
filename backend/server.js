@@ -52,6 +52,7 @@ import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import resumeRoutes from "./routes/resume.route.js";  //CHECK
+import jobRoutes from "./routes/job.route.js";
 
 import connectMongoDB from "./db/connectMongoDB.js";
 
@@ -83,6 +84,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/resume", resumeRoutes); //CHECK
+app.use("/api/jobs", jobRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
