@@ -6,6 +6,7 @@ const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
   const username = authUser?.username;
 
+  // Handle resume file upload and extract text from the PDF
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -34,14 +35,17 @@ const MLPage = ({ authUser }) => {
     }
   };
 
+  // Send extracted resume text to backend for saving
   const sendToBackend = async () => {
     if (!username || !resumeText) {
-      console.log(username, resumeText);
+      console.log(username, resumeText);  // Log username and resume text before sending
       console.error("Username and resume text are required");
       return;
     }
 
     try {
+      console.log("Sending resume text to backend:", resumeText);  // Log the resume text here
+
       const response = await fetch("http://localhost:5000/api/resume", {
         method: "POST",
         headers: {
@@ -59,11 +63,12 @@ const MLPage = ({ authUser }) => {
         throw new Error("Failed to upload resume to the server");
       }
 
-      console.log("Resume successfully uploaded");
+      console.log("Resume successfully uploaded11");
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
   };
+
 
   return (
     <div className="container mx-auto p-6">
@@ -73,7 +78,7 @@ const MLPage = ({ authUser }) => {
 
       {/* Section for Students */}
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Section for Students</h2>
+        <h2 className="text-2xl font-semibold mb-3">Submit Your Resume</h2>
         <h3 className="text-xl mb-3">Submit Your Resume</h3>
         <input
           type="file"
@@ -86,24 +91,6 @@ const MLPage = ({ authUser }) => {
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
           >
             Submit Resume
-          </button>
-        </div>
-      </div>
-
-      {/* Section for Alumni */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-3">Section for Alumni</h2>
-        <h3 className="text-xl mb-3">Enter Requirements</h3>
-        <textarea
-          className="border p-2 w-full mb-4"
-          placeholder="Enter your requirements here..."
-          rows="5"
-        ></textarea>
-        <div className="text-center">
-          <button
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-          >
-            Give Top Matched Student
           </button>
         </div>
       </div>
