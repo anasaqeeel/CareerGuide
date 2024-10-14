@@ -3,14 +3,6 @@ import Resume from "../models/resume.model.js";
 
 const router = express.Router();
 
-// Function to clean resume text (remove special characters and clean up)
-function cleanText(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-zA-Z\s]/g, '') // Remove special characters
-    .replace(/\s\s+/g, ' '); // Replace multiple spaces with a single space
-}
-
 // POST route to store resume text
 router.post("/", async (req, res) => {
   const { username, resumeText } = req.body;
@@ -20,23 +12,24 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    // Log the received raw resume text for debugging
-    console.log("Raw Resume Text received from frontend:", resumeText);
-
-    // Clean the resume text
-    const cleanedResumeText = cleanText(resumeText);
-
-    // Log the cleaned text to verify it's cleaned correctly
-    console.log("Cleaned Resume Text:", cleanedResumeText);
-
-    // Create a new Resume document and save it to the database
-    const newResume = new Resume({ username, resumeText: cleanedResumeText });
+    const newResume = new Resume({ username, resumeText });
     await newResume.save();
 
-    res.status(201).json({ message: "Resume stored successfully", resume: newResume });
+    res.status(201).json({ message: "Resume stored successfully" });
   } catch (error) {
     console.error("Error storing resume:", error);
     res.status(500).json({ message: "Error storing resume" });
+  }
+});
+
+// GET route to fetch resumes
+router.get("/", async (req, res) => {
+  try {
+    const resumes = await Resume.find(); // Fetch all resumes from the database
+    res.status(200).json(resumes);
+  } catch (error) {
+    console.error("Error fetching resumes:", error);
+    res.status(500).json({ message: "Error fetching resumes" });
   }
 });
 

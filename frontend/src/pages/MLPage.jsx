@@ -4,6 +4,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.js";
 
 const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
+  const [fetchedResumes, setFetchedResumes] = useState([]); // To store the fetched resumes
   const username = authUser?.username;
 
   // Handle resume file upload and extract text from the PDF
@@ -38,13 +39,13 @@ const MLPage = ({ authUser }) => {
   // Send extracted resume text to backend for saving
   const sendToBackend = async () => {
     if (!username || !resumeText) {
-      console.log(username, resumeText);  // Log username and resume text before sending
+      console.log(username, resumeText); // Log username and resume text before sending
       console.error("Username and resume text are required");
       return;
     }
 
     try {
-      console.log("Sending resume text to backend:", resumeText);  // Log the resume text here
+      console.log("Sending resume text to backend:", resumeText); // Log the resume text here
 
       const response = await fetch("http://localhost:5000/api/resume", {
         method: "POST",
@@ -63,12 +64,32 @@ const MLPage = ({ authUser }) => {
         throw new Error("Failed to upload resume to the server");
       }
 
-      console.log("Resume successfully uploaded11");
+      console.log("Resume successfully uploaded!");
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
   };
 
+  // Function to fetch data from MongoDB
+  const fetchResumes = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/resume", {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        console.error("Error fetching resumes:", errorDetails);
+        return;
+      }
+
+      const data = await response.json();
+      setFetchedResumes(data); // Store fetched data in the state
+      console.log("Fetched resumes:", data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -93,6 +114,29 @@ const MLPage = ({ authUser }) => {
             Submit Resume
           </button>
         </div>
+      </div>
+
+      {/* Button to fetch resumes from MongoDB */}
+      <div className="mb-6 text-center">
+        <button
+          onClick={fetchResumes}
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+        >
+          Fetch Resumes from Backend
+        </button>
+      </div>
+
+      {/* Display the fetched resumes */}
+      <div className="mt-4">
+        <h3 className="text-xl mb-3">Fetched Resumes:</h3>
+        <ul>
+          {fetchedResumes.map((resume, index) => (
+            <li key={index} className="mb-2 border p-2">
+              <p><strong>Username:</strong> {resume.username}</p>
+              <p><strong>Resume Text:</strong> {resume.resumeText}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
