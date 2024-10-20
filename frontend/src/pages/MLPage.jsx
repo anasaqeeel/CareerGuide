@@ -42,9 +42,9 @@ const MLPage = ({ authUser }) => {
 
   // Send extracted resume text to backend for saving
   const sendToBackend = async () => {
-    if (!username || !resumeText) {
-      console.log(username, resumeText); // Log username and resume text before sending
-      console.error("Username and resume text are required");
+    if (!username || !resumeText || !jobUsername || !jobTitle) {
+      console.log(username, resumeText, jobUsername, jobTitle); // Log all variables before sending
+      console.error("Username, jobUsername, jobTitle, and resume text are required");
       return;
     }
 
@@ -58,8 +58,8 @@ const MLPage = ({ authUser }) => {
         },
         body: JSON.stringify({
           username: username,
-          recemail:jobUsername,
-          jobtitle:jobTitle,
+          recemail: jobUsername,  // Ensure this value is correctly passed
+          jobtitle: jobTitle,     // Ensure this value is correctly passed
           resumeText: resumeText,
         }),
       });
@@ -75,6 +75,7 @@ const MLPage = ({ authUser }) => {
       console.error("Error sending data to backend:", error);
     }
   };
+
 
   // Function to fetch data from MongoDB
   const fetchResumes = async () => {
@@ -131,7 +132,7 @@ const MLPage = ({ authUser }) => {
           Fetch Resumes from Backend
         </button>
       </div>
-      
+
 
       {/* Display the fetched resumes */}
       <div className="mt-4">
