@@ -16,6 +16,7 @@ import LoadingSpinner from "./components/common/LoadingSpinner";
 import Jobs from "./pages/Jobs";
 import Results from "./pages/Results";
 import Newjobs from "./pages/Newjobs";
+import Cvranks from "./pages/cvranks";
 
 function App() {
 	const { data: authUser, isLoading } = useQuery({
@@ -60,6 +61,7 @@ function App() {
 				<Route path='/Results' element={authUser ? <Results authUser={authUser} /> : <Navigate to='/login' />} />  
 				<Route path='/Newjobs' element={authUser ? <Newjobs authUser={authUser} /> : <Navigate to='/login' />} />  
 				<Route path='/MLPage' element={authUser ? <MLPage authUser={authUser} /> : <Navigate to='/login' />} />                              
+				<Route path='/cvranks' element={authUser ? <Cvranks /> : <Navigate to='/login' />} />                              
 			</Routes>
 			{authUser && <RightPanel />}
 			<Toaster />
