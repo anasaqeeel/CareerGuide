@@ -5,13 +5,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.js";
 
 const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
-  const [fetchedResumes, setFetchedResumes] = useState([]); // To store the fetched resumes
+  const [fetchedResumes, setFetchedResumes] = useState([]); 
   const username = authUser?.username;
   const location = useLocation();
-  const { jobUsername, jobTitle, authUsername } = location.state;  // Extract data from state
+  const { jobUsername, jobTitle, authUsername } = location.state;  
 
 
-  // Handle resume file upload and extract text from the PDF
+ 
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -40,16 +40,16 @@ const MLPage = ({ authUser }) => {
     }
   };
 
-  // Send extracted resume text to backend for saving
+  
   const sendToBackend = async () => {
     if (!username || !resumeText || !jobUsername || !jobTitle) {
-      console.log(username, resumeText, jobUsername, jobTitle); // Log all variables before sending
+      console.log(username, resumeText, jobUsername, jobTitle); 
       console.error("Username, jobUsername, jobTitle, and resume text are required");
       return;
     }
 
     try {
-      console.log("Sending resume text to backend:", resumeText); // Log the resume text here
+      console.log("Sending resume text to backend:", resumeText); 
 
       const response = await fetch("http://localhost:5000/api/resume", {
         method: "POST",
@@ -58,8 +58,8 @@ const MLPage = ({ authUser }) => {
         },
         body: JSON.stringify({
           username: username,
-          recemail: jobUsername,  // Ensure this value is correctly passed
-          jobtitle: jobTitle,     // Ensure this value is correctly passed
+          recemail: jobUsername,  
+          jobtitle: jobTitle,     
           resumeText: resumeText,
         }),
       });
@@ -77,7 +77,7 @@ const MLPage = ({ authUser }) => {
   };
 
 
-  // Function to fetch data from MongoDB
+  
   const fetchResumes = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/resume", {
@@ -91,7 +91,7 @@ const MLPage = ({ authUser }) => {
       }
 
       const data = await response.json();
-      setFetchedResumes(data); // Store fetched data in the state
+      setFetchedResumes(data); 
       console.log("Fetched resumes:", data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -104,7 +104,7 @@ const MLPage = ({ authUser }) => {
         Machine Learning Resume Ranking
       </h1>
 
-      {/* Section for Students */}
+      
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Submit Your Resume</h2>
         <h3 className="text-xl mb-3">Submit Your Resume</h3>
@@ -123,7 +123,7 @@ const MLPage = ({ authUser }) => {
         </div>
       </div>
 
-      {/* Button to fetch resumes from MongoDB */}
+      
       <div className="mb-6 text-center">
         <button
           onClick={fetchResumes}
@@ -134,7 +134,7 @@ const MLPage = ({ authUser }) => {
       </div>
 
 
-      {/* Display the fetched resumes */}
+      
       <div className="mt-4">
         <h3 className="text-xl mb-3">Fetched Resumes:</h3>
         <ul>

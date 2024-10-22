@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Results = ({ authUser }) => {
-    const username = authUser?.email; // Ensure authUser and email exist
+    const username = authUser?.email; 
     const navigate = useNavigate();
     const [jobs, setJobs] = useState([]);
     const [rankedResumes, setRankedResumes] = useState([]);
 
     const extract_skills_from_job_desc = (jobDescription) => {
-        const stopWords = ['and', 'or', 'the', 'a', 'an']; // Extend this stop words list as needed
+        const stopWords = ['and', 'or', 'the', 'a', 'an']; 
         return jobDescription
             .split(' ')
             .filter((word) => !stopWords.includes(word.toLowerCase()));
@@ -41,12 +41,12 @@ const Results = ({ authUser }) => {
                 },
                 body: JSON.stringify({
                     jobDescription: job.description,
-                    jobTitle: job.title, // pass the job title here
+                    jobTitle: job.title, 
                 }),
             });
 
             const data = await response.json();
-            console.log("Ranked resumes:", data); // Log the data
+            console.log("Ranked resumes:", data); 
             setRankedResumes(data);
             navigate('/cvranks', { state: { rankedResumes: data } });
         } catch (error) {

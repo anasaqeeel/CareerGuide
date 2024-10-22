@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";  // Import useNavigate
 const Newjobs = ({ authUser }) => {
     const username = authUser?.username;
     const [jobs, setJobs] = useState([]);
-    const navigate = useNavigate();  // Initialize the navigate function
+    const navigate = useNavigate();  
 
     useEffect(() => {
-        // Fetch the job postings for the user when the component loads
+       
         const fetchJobs = async () => {
             try {
                 const response = await fetch(`/api/jobs`);
@@ -26,7 +26,7 @@ const Newjobs = ({ authUser }) => {
     }, [username]);
 
     const handleApplyClick = (job) => {
-        // Navigate to a new page and pass job data through state
+        
         navigate(`/MLPage`, { state: { jobUsername: job.username, jobTitle: job.title, authUsername: username } });
     };
 
@@ -44,7 +44,7 @@ const Newjobs = ({ authUser }) => {
                                     <p className="card-text"><strong>Requirements:</strong> {job.requirements}</p>
                                     <button
                                         className="btn btn-success"
-                                        onClick={() => handleApplyClick(job)}  // Trigger navigation on click
+                                        onClick={() => handleApplyClick(job)}  
                                     >
                                         Apply Now
                                     </button>
