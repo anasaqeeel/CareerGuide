@@ -19,12 +19,12 @@ export default function Cvranks() {
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Ranked Resumes</h1>
         <div className="space-y-6">
           {rankedResumes.map((resumeEntry, index) => {
-            const resume = resumeEntry[0];
-            const score = resumeEntry[1];
+            const resume = resumeEntry;
+            const score = resumeEntry.score;
 
-            if (!resume || score === undefined) {
-              return <p key={index} className="text-red-600">Invalid resume entry.</p>;
-            }
+            // if (!resume || score === undefined) {
+            //   return <p key={index} className="text-red-600">Invalid resume entry.</p>;
+            // }
 
             return (
               <div key={resume._id} className="bg-white shadow-md rounded-lg overflow-hidden">
