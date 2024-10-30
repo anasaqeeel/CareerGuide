@@ -3,7 +3,7 @@ import Job from "../models/Job.model.js";
 
 const router = express.Router();
 
-// POST route to store a job
+
 router.post("/", async (req, res) => {
   const { username, title, description, requirements } = req.body;
 
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET route to fetch jobs based on the username
+
 router.get("/", async (req, res) => {
     const { username } = req.query;
   
@@ -30,19 +30,19 @@ router.get("/", async (req, res) => {
       let jobs;
   
       if (username) {
-        // Fetch jobs for the specified username
+       
         jobs = await Job.find({ username });
       } else {
-        // Fetch all jobs if no username is provided
+        
         jobs = await Job.find();
       }
   
-      // Handle case where no jobs are found
+      
       if (jobs.length === 0) {
         return res.status(404).json({ message: "No jobs found" });
       }
   
-      // Return the jobs in the response
+      
       res.status(200).json(jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);

@@ -7,6 +7,7 @@ const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
   const [fetchedResumes, setFetchedResumes] = useState([]); 
   const username = authUser?.username;
+  const useremail=authUser?.email;
   const location = useLocation();
   const { jobUsername, jobTitle, authUsername } = location.state;  
 
@@ -58,6 +59,7 @@ const MLPage = ({ authUser }) => {
         },
         body: JSON.stringify({
           username: username,
+          useremail:useremail,
           recemail: jobUsername,  
           jobtitle: jobTitle,     
           resumeText: resumeText,

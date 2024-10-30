@@ -6,6 +6,8 @@ export default function Cvranks() {
   const { rankedResumes } = location.state || [];
 
   if (!rankedResumes || rankedResumes.length === 0) {
+    console.log("fghjhgfghjkjhg");
+    console.log(rankedResumes);
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <p className="text-2xl font-semibold text-gray-600">No ranked resumes found for this job.</p>
@@ -20,7 +22,7 @@ export default function Cvranks() {
         <div className="space-y-6">
           {rankedResumes.map((resumeEntry, index) => {
             const resume = resumeEntry;
-            const score = resumeEntry.score;
+            const score = resumeEntry.match_score;
 
             // if (!resume || score === undefined) {
             //   return <p key={index} className="text-red-600">Invalid resume entry.</p>;
@@ -32,7 +34,7 @@ export default function Cvranks() {
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-gray-800">{resume.jobtitle}</h2>
                     <span className="px-3 py-1 bg-blue-500 text-white text-sm font-semibold rounded-full">
-                      Score: {score.toFixed(2)}
+                      Score: {score}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-4">
