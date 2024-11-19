@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 
 const Newjobs = ({ authUser }) => {
     const username = authUser?.username;
     const [jobs, setJobs] = useState([]);
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
 
     useEffect(() => {
-       
+
         const fetchJobs = async () => {
             try {
                 const response = await fetch(`/api/jobs`);
@@ -26,7 +26,7 @@ const Newjobs = ({ authUser }) => {
     }, [username]);
 
     const handleApplyClick = (job) => {
-        
+
         navigate(`/MLPage`, { state: { jobUsername: job.username, jobTitle: job.title, authUsername: username } });
     };
 
@@ -44,7 +44,7 @@ const Newjobs = ({ authUser }) => {
                                     <p className="card-text"><strong>Requirements:</strong> {job.requirements}</p>
                                     <button
                                         className="btn btn-success"
-                                        onClick={() => handleApplyClick(job)}  
+                                        onClick={() => handleApplyClick(job)}
                                     >
                                         Apply Now
                                     </button>

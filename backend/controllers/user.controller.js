@@ -142,7 +142,6 @@ export const updateUser = async (req, res) => {
 
 		user = await user.save();
 
-		// password should be null in response
 		user.password = null;
 
 		return res.status(200).json(user);

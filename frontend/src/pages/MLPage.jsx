@@ -5,14 +5,14 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.js";
 
 const MLPage = ({ authUser }) => {
   const [resumeText, setResumeText] = useState("");
-  const [fetchedResumes, setFetchedResumes] = useState([]); 
+  const [fetchedResumes, setFetchedResumes] = useState([]);
+  const [notification, setNotification] = useState(""); // State for notifications
+  const [notificationType, setNotificationType] = useState(""); // Type of notification (success/error)
   const username = authUser?.username;
-  const useremail=authUser?.email;
+  const useremail = authUser?.email;
   const location = useLocation();
-  const { jobUsername, jobTitle, authUsername } = location.state;  
+  const { jobUsername, jobTitle, authUsername } = location.state;
 
-
- 
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -33,25 +33,35 @@ const MLPage = ({ authUser }) => {
             extractedText += pageText + "\n";
           }
           setResumeText(extractedText);
+          setNotification("Resume uploaded successfully!");
+          setNotificationType("success");
         } catch (error) {
           console.error("Error extracting text from PDF:", error);
+          setNotification("Error extracting text from the uploaded PDF. Please try again.");
+          setNotificationType("error");
         }
       };
       reader.readAsArrayBuffer(file);
+    } else {
+      setNotification("No file selected. Please upload a resume.");
+      setNotificationType("error");
     }
   };
 
-  
   const sendToBackend = async () => {
-    if (!username || !resumeText || !jobUsername || !jobTitle) {
-      console.log(username, resumeText, jobUsername, jobTitle); 
-      console.error("Username, jobUsername, jobTitle, and resume text are required");
+    if (!resumeText) {
+      setNotification("No resume uploaded! Please upload your resume before submitting.");
+      setNotificationType("error");
+      return;
+    }
+
+    if (!username || !jobUsername || !jobTitle) {
+      setNotification("Required fields are missing. Please try again.");
+      setNotificationType("error");
       return;
     }
 
     try {
-      console.log("Sending resume text to backend:", resumeText); 
-
       const response = await fetch("http://localhost:5000/api/resume", {
         method: "POST",
         headers: {
@@ -59,9 +69,9 @@ const MLPage = ({ authUser }) => {
         },
         body: JSON.stringify({
           username: username,
-          useremail:useremail,
-          recemail: jobUsername,  
-          jobtitle: jobTitle,     
+          useremail: useremail,
+          recemail: jobUsername,
+          jobtitle: jobTitle,
           resumeText: resumeText,
         }),
       });
@@ -72,14 +82,15 @@ const MLPage = ({ authUser }) => {
         throw new Error("Failed to upload resume to the server");
       }
 
-      console.log("Resume successfully uploaded!");
+      setNotification("Resume successfully uploaded!");
+      setNotificationType("success");
     } catch (error) {
       console.error("Error sending data to backend:", error);
+      setNotification("Failed to upload resume to the server. Please try again.");
+      setNotificationType("error");
     }
   };
 
-
-  
   const fetchResumes = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/resume", {
@@ -93,10 +104,13 @@ const MLPage = ({ authUser }) => {
       }
 
       const data = await response.json();
-      setFetchedResumes(data); 
-      console.log("Fetched resumes:", data);
+      setFetchedResumes(data);
+      setNotification("Resumes fetched successfully!");
+      setNotificationType("success");
     } catch (error) {
       console.error("Error fetching data:", error);
+      setNotification("Failed to fetch resumes. Please try again.");
+      setNotificationType("error");
     }
   };
 
@@ -106,10 +120,21 @@ const MLPage = ({ authUser }) => {
         Machine Learning Resume Ranking
       </h1>
 
-      
+      {/* Notification Section */}
+      {notification && (
+        <div
+          className={`p-4 mb-4 text-center rounded ${notificationType === "success"
+            ? "bg-green-200 text-green-800"
+            : "bg-red-200 text-red-800"
+            }`}
+        >
+          {notification}
+        </div>
+      )}
+
+      {/* Resume Upload Section */}
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Submit Your Resume</h2>
-        <h3 className="text-xl mb-3">Submit Your Resume</h3>
         <input
           type="file"
           onChange={handleResumeUpload}
@@ -125,7 +150,7 @@ const MLPage = ({ authUser }) => {
         </div>
       </div>
 
-      
+      {/* Fetch Resumes Section */}
       <div className="mb-6 text-center">
         <button
           onClick={fetchResumes}
@@ -135,8 +160,7 @@ const MLPage = ({ authUser }) => {
         </button>
       </div>
 
-
-      
+      {/* Fetched Resumes Section */}
       <div className="mt-4">
         <h3 className="text-xl mb-3">Fetched Resumes:</h3>
         <ul>
